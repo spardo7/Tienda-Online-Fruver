@@ -1,3 +1,61 @@
+---
+
+## 🎓 Contexto Académico — Propuesta Final Ingeniería Web
+
+### El Problema
+
+Muchos negocios locales de venta y reparto a domicilio operan de forma completamente manual y desorganizada:
+
+- Los pedidos se reciben por teléfono y se anotan en un cuaderno.
+- La asignación de domicilios se coordina por grupos de WhatsApp.
+- El estado de los envíos se actualiza en hojas de cálculo al final del día.
+- Los clientes no tienen forma de saber dónde está su pedido, lo que genera un alto volumen de llamadas innecesarias al negocio.
+
+Este sistema es ineficiente, propenso a errores humanos y no permite que el negocio crezca ni escale.
+
+---
+
+### La Solución — La Canasta Familiar 🧺
+
+**La Canasta Familiar** es una plataforma web completa desarrollada para un fruver bogotano real, que resuelve todos los problemas anteriores mediante dos componentes integrados:
+
+**1. Panel de Administración (Interfaz Privada)**
+
+Permite a los empleados del negocio gestionar toda la operación desde el navegador:
+
+- Registrar nuevos productos con datos completos: nombre, categoría, precio, stock, peso y dimensiones.
+- Visualizar y administrar el inventario en tiempo real desde Firestore.
+- Asignar pedidos a los repartidores disponibles de forma automática, priorizando por zona de cobertura.
+- Hacer seguimiento del estado de cada envío a través de un pipeline de 5 fases: *Pedido recibido → Buscando repartidor → Asignado → En camino → Entregado*.
+
+**2. Seguimiento en Tiempo Real (Interfaz Pública)**
+
+El cliente puede ver exactamente qué pasa con su pedido sin necesidad de llamar:
+
+- Estado actual del pedido actualizado automáticamente paso a paso.
+- Mapa interactivo con Google Maps que muestra la ubicación animada del domiciliario en ruta hacia su dirección.
+- ETA actualizado en tiempo real mediante `requestAnimationFrame`, calculado proporcionalmente a la distancia real.
+- Dirección del cliente geocodificada automáticamente (texto → coordenadas) vía Google Geocoding API.
+
+Adicionalmente, el sitio cuenta con tienda online con carrito persistente por usuario, autenticación con Firebase, minijuego interactivo y un modo secreto con descuento del 30% como sistema de gamificación.
+
+---
+
+### Arquitectura de la Solución
+
+```
+Frontend — SPA Vanilla JS (sin framework)
+        │
+        ├── Firebase Auth          → Registro e inicio de sesión de usuarios
+        ├── Cloud Firestore        → Catálogo de productos y carritos persistentes
+        ├── Google Maps JS API     → Mapa interactivo de seguimiento del domiciliario
+        ├── Google Geocoding API   → Conversión de dirección de texto a coordenadas
+        └── WhatsApp API (wa.me)   → Confirmación de pedido con resumen pre-armado
+```
+
+> Toda la lógica vive en un único archivo `index.html` organizado en 8 bloques `<script>`. Los módulos se comunican entre sí a través de `window.*`: Firebase expone `window._db`, `window._carrito` y `window._uid`; el minijuego expone `window.frutas`; el sistema de mapas expone `window.mostrarMapaSeguimiento()`.
+
+
 # 🧺 La Canasta Familiar — Tienda Online
 
 > Sitio web completo para un fruver bogotano con tienda online, carrito persistente, autenticación de usuarios, panel de administración, sistema de repartidores con mapa en tiempo real, minijuego interactivo y modo secreto con descuento.
