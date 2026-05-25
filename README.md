@@ -1,4 +1,4 @@
-# 🎓 Contexto Académico — Propuesta Final Ingeniería Web
+# Propuesta Final 
 
 ## El Problema
 
